@@ -1,6 +1,9 @@
 
 const express = require("express");
-const bodyparser = require("body-parser")
+const bodyparser = require("body-parser");
+const csv=require("csv-parser");
+const fs=require("fs");
+
 let candlelist = [];
 const app = express();
 app.set("view engine", "ejs");
@@ -29,7 +32,9 @@ const url = "https://api.fyers.in/api/v2/generate-authcode?client_id=6B589PEK0X-
 app.get("/home", function (req, res) {
     res.render("fyers",{candles:candlelist});
     candlelist=[]
+
 })
+
 app.get("/", function (req, res) {
     res.redirect(url);
 })
@@ -63,6 +68,8 @@ app.post("/home", function (req, res) {
         const candlearray=result.candles;
         candlelist=Object.values(candlearray)
         res.redirect("/home");
+
+        writeToCSVFile(candlelist)
     }  
     
         getHistory();
@@ -92,3 +99,21 @@ app.get("/auth", function (req, res) {
 
     });
 });
+
+  function writeToCSVFile(candlelists) {
+    const filename = 'stockdata.csv';
+    fs.writeFile(filename, extractAsCSV(candlelists), err => {
+      if (err) {
+        console.log('Error writing to csv file', err);
+      } else {
+        console.log(`saved as ${filename}`);
+      }
+    });
+  }
+  function extractAsCSV(candlelists) {
+    const header = ["Epoc Time,Open value,Highest value,Lowest value,Close value,Volume"];
+    const rows = candlelists.map(candle =>
+       `${candle[0]}, ${candle[1]}, ${candle[2]},${candle[3]},${candle[4]},${candle[5]}`
+    );
+    return header.concat(rows).join("\n");
+  }
