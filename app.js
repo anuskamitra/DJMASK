@@ -1,13 +1,16 @@
 
 const express = require("express");
 const bodyparser = require("body-parser");
+const secret=require("./secret.js");
+
 const csv=require("csv-parser");
 const fs=require("fs");
-
-let candlelist = [];
 const app = express();
+
+
 app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: true }));
+let candlelist = [];
 let access_token = " ";
 let auth = " ";
 
@@ -18,20 +21,24 @@ app.listen(8080, function () {
 
 const fyers = require("fyers-api-v2");
 const { setAccessToken } = require("fyers-api-v2");
-fyers.setAppId('6B589PEK0X-100')
+fyers.setAppId(secret.app_ID)
 fyers.setRedirectUrl('http://localhost:8080/auth');
 /*auth_code : “This will be the response of the generateAuthCode method once you click 
 on the redirect_url you will be provided with the auth_code”*/
 fyers.generateAuthCode();
 
-const url = "https://api.fyers.in/api/v2/generate-authcode?client_id=6B589PEK0X-100&redirect_uri=http://localhost:8080/auth&response_type=code&state=sample_state"
+const url = "https://api.fyers.in/api/v2/generate-authcode?client_id="+secret.app_ID+"&redirect_uri=http://localhost:8080/auth&response_type=code&state=sample_state"
 
 
 
-
+app.post("/download",function(req,res){
+    res.download("stockdata.csv",function(err){
+            console.log(err)
+    })
+})
 app.get("/home", function (req, res) {
     res.render("fyers",{candles:candlelist});
-    candlelist=[]
+   candlelist=[];
 
 })
 
@@ -88,7 +95,7 @@ app.get("/auth", function (req, res) {
 
     const reqBody = {
         auth_code: auth,
-        secret_key: "ANFHLLWORI"
+        secret_key: secret.secret_key
     }
     fyers.generate_access_token(reqBody).then((response) => {
 
