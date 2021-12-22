@@ -9,7 +9,8 @@
 
 <body>
     <form action="/home" method="post">
-     
+        
+        <h2>Stock Name</h2>
         <input list="sn" name="sn">
         <datalist id="sn">
         <option value='NSE:TCS-EQ'> </option>
@@ -45,6 +46,9 @@
         <button type="submit" name="button">GO </button>
 
     </form>
+    <form action="/download" method="post">
+        <button name="download" type="submit"> Download</button>
+    </form>
     <table>
         <tr>
             <th>Current time</th>
@@ -67,9 +71,7 @@
         <%}%>
 
     </table>
-    <form action="/download" method="post">
-<button name="download" type="submit"> Download</button>
-    </form>
+    
 </body>
 
 </html>
