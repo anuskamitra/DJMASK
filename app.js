@@ -61,7 +61,7 @@ app.post("/home", function (req, res) {
     }
     console.log(timeframe)
 
-    title=stockname+" "+startdate+" to "+lastdate;
+    title=stockname+"   "+startdate+" to "+lastdate;
     console.log(stockname, timeframe, startdate, lastdate);
     async function getHistory() {
         let history = new fyers.history()
@@ -75,7 +75,11 @@ app.post("/home", function (req, res) {
 
         const candlearray=result.candles;
         candlelist=Object.values(candlearray)
-        candlelist=candlelist.map(candle=>[(new Date(candle[0] * 1000)).toLocaleString(),candle[1],candle[2],candle[3],candle[4],candle[5]])
+        candlelist=candlelist.map((candle)=>{
+            const date_and_time=((new Date(candle[0] * 1000)).toLocaleString()).split(",");
+            return [date_and_time[0],date_and_time[1],candle[1],candle[2],candle[3],candle[4],candle[5]]
+           // [((new Date(candle[0] * 1000)).toLocaleString()).split(",")[0],((new Date(candle[0] * 1000)).toLocaleString()).split(",")[1],candle[1],candle[2],candle[3],candle[4],candle[5]])
+        })
         console.log(candlelist)
         res.redirect("/home");
 
@@ -121,9 +125,9 @@ app.get("/auth", function (req, res) {
     });
   }
   function extractAsCSV(candlelists) {
-    const header = ["Epoch Time,Open value,Highest value,Lowest value,Close value,Volume"];
+    const header = ["Date,Time,Open value,Highest value,Lowest value,Close value,Volume"];
     const rows = candlelists.map(candle =>
-       `${candle[0]}, ${candle[1]}, ${candle[2]},${candle[3]},${candle[4]},${candle[5]}`
+       `${candle[0]}, ${candle[1]}, ${candle[2]},${candle[3]},${candle[4]},${candle[5]},${candle[6]}`
     );
     return header.concat(rows).join("\n");
   }
