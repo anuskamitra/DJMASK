@@ -12,7 +12,7 @@ app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: true }));
 let candlelist = [];
 let access_token = " ";
-let auth = " ";
+let auth = "";
 
 
 const fyers = require("fyers-api-v2");
@@ -33,10 +33,13 @@ app.post("/download",function(req,res){
     })
 })
 app.get("/home", function (req, res) {
+   if(auth===""){
+       res.redirect("/")
+   }else{
     res.render("fyers",{Title:title,candles:candlelist});
    candlelist=[];
    title=""
-
+   }
 })
 
 app.get("/", function (req, res) {
