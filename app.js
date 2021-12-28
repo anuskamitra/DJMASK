@@ -15,10 +15,6 @@ let access_token = " ";
 let auth = " ";
 
 
-app.listen(8080, function () {
-    console.log("Listening at 8080 port");
-})
-
 const fyers = require("fyers-api-v2");
 const { setAccessToken } = require("fyers-api-v2");
 fyers.setAppId(secret.app_ID)
@@ -39,7 +35,7 @@ app.post("/download",function(req,res){
 app.get("/home", function (req, res) {
     res.render("fyers",{Title:title,candles:candlelist});
    candlelist=[];
-   title="Stock name Date range"
+   title=""
 
 })
 
@@ -132,4 +128,14 @@ app.get("/auth", function (req, res) {
     return header.concat(rows).join("\n");
   }
 
- 
+
+
+
+
+
+
+
+
+  app.listen(8080, function () {
+    console.log("Listening at 8080 port");
+})
