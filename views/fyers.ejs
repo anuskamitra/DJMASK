@@ -61,7 +61,7 @@
     <form action="/home" method="post" class="row g-3">
 
         <div class="col-auto">
-            <input list="sn" name="sn" class="form-control" placeholder="Stock Name">
+            <input list="sn" name="sn" class="form-control" placeholder="Stock Name" required>
             <datalist id="sn">
                 <option value='NSE:TCS-EQ'> </option>
                 <option value='NSE:SBIN-EQ'> </option>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="col-auto">
-            <input list="tf" name="tf" class="form-control" placeholder="Time frame">
+            <input list="tf" name="tf" class="form-control" placeholder="Time frame" required >
             <datalist id="tf">
                 <option value="1 minute">
                 <option value="2 minutes">
@@ -93,10 +93,10 @@
 
         <p>Date Range</p>
         <div class="col-auto">
-            <input type="date" id="dr" name="dr1" class="form-control">
+            <input type="date" id="dr" name="dr1" class="form-control" required>
         </div>
         <div class="col-auto">
-            <input type="date" id="dr" name="dr2" class="form-control"><br>
+            <input type="date" id="dr" name="dr2" class="form-control" required><br>
         </div>
         <div class="col-auto">
             <button type="submit" name="button" class="btn btn-primary mb-3">GO </button>
